@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>YourMangá - Login</title>
+</head>
+<body>
+    <main class="container">
+        <div class="header">
+            <img src="../../public/assets/Logo.png"/>
+        </div>
+        <form action="" method="POST" >
+            <div class="input-field">
+                <input type="text" name="nickname" id="nickname" placeholder="Digite seu Nickname" >
+                <div class="underline"></div>
+            </div>
+            <div class="input-field">
+                <input type="password" name="password" id="password" placeholder="Digite sua Senha" >
+                <div class="underline"></div>
+            </div>
+
+            <input type="button" value="Login" onclick="return SignIn(nickname.value, password.value)">
+        </form>
+    </main>
+</body>
+</html>
