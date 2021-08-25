@@ -14,6 +14,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 main.container {
@@ -94,5 +95,20 @@ form input[type="button"] {
 form input[type="button"]:hover {
     letter-spacing: 0.5px;
     background: linear-gradient(to left, #4776e6, #8e54e9);
+}
+
+.alert {
+    padding: 25px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin: 10px;
+    font-size: 18px;
+    min-width: 350px;
+}
+
+.message {
+    border-color: #e8273b;
+    color: #FFF;
+    background-color: #ed5565;
 }
 
