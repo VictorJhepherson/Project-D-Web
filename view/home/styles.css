@@ -7,7 +7,7 @@
 }
 
 body {
-    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    background: white;
     background-repeat: no-repeat;
     min-height: 100vh;
     min-width: 100vw;
@@ -16,8 +16,63 @@ body {
     justify-content: center;
 }
 
-main h2 {
-    font-size: 30rem;
-    font-weight: 600;
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+header h2 {
+    font-size: 2rem;
+    font-weight: bold;
     color: white;
+    margin-left: 20px;
+}
+
+.header button {
+    background: transparent;
+    width: 50x;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.material-icons  {
+    font-size: 50px;
+    color: white;
+}
+
+.sidebar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    height: calc(100% - 80px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    line-height: 65px;
+    font-size: 20px;
+    color: white;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid black;
+    text-decoration: none;
 }

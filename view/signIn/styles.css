@@ -104,6 +104,7 @@ form input[type="button"]:hover {
     margin: 10px;
     font-size: 18px;
     min-width: 350px;
+    display: none;
 }
 
 .message {
