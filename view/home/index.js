@@ -10,9 +10,3 @@ function seeSideBar () {
         button.style.marginRight = '320px';
     }
 }
-
-function redirectScreen (id) {
-    var div = document.getElementById('screen');
-
-    div.load('../' + id);
-}
