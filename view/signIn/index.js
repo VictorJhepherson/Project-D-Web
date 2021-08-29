@@ -14,6 +14,9 @@ const SignIn = async (SU_NICKNAME, SU_PASSWORD) => {
             const json = await req.json();
 
             if(json.token) {
+                console.log(json.data.SU_ID);
+                window.localStorage.setItem('user', json.data.SU_ID.toString());
+                window.localStorage.setItem('token', json.token);
                 window.location.replace('../home/index.html', { json });
             } else {
                 const setMessage = document.getElementById('alerta');
