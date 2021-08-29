@@ -38,3 +38,7 @@ const signOut = async () => {
         alert(err);
     }
 }
+
+function redirectScreen (path) {
+    $('#screen').load(path);
+}
