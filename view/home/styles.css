@@ -48,6 +48,15 @@ header h2 {
     color: white;
 }
 
+.screen {
+    width: 100%;
+    height: calc(100% - 80px);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidebar {
     position: fixed;
     right: 0;
