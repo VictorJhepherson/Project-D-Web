@@ -6,16 +6,6 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
-body {
-    background: white;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    min-width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .container h2 {
     font-size: 40px;
     font-weight: bold;
