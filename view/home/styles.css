@@ -109,7 +109,7 @@ header h2 {
     flex-direction: column;
     margin-top: 15px;
     border-top: 4px solid white;
-    box-shadow: 7px 5px 3px #9b71ee;
+    box-shadow: 7px 5px 3px white;
     background: linear-gradient(45deg, #8e2de2, #4a00e0);
 }
 
