@@ -1,5 +1,7 @@
 const BASE_API = 'https://project-d-api.herokuapp.com';
 
+/* HOME */
+
 function seeSideBar () {
     var sideBar = document.getElementById('sidebar');
     var button = document.getElementById('options');
@@ -42,3 +44,16 @@ const signOut = async () => {
 function redirectScreen (path) {
     $('#screen').load(path);
 }
+
+
+/* MANGAADD */
+
+function definePages () {
+    const path = document.getElementById('combo-type');
+    console.log(path.options[path.selectedIndex].value);
+    if(path.options[path.selectedIndex].value == 'manga') {
+        $('.page').load('../subPages/forMangas.html');
+    } else if(path.options[path.selectedIndex].value == 'chapter') {
+        $('.page').load('../subPages/forChapters.html');
+    } 
+} 

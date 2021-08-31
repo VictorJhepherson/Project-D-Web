@@ -9,7 +9,7 @@
 }
 
 body {
-    background: white;
+    background-image: url('../../public/assets/background.jpg');
     background-repeat: no-repeat;
     width: 100%;
     height: 100%;
@@ -32,7 +32,7 @@ body {
 }
 
 header h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: white;
     margin-left: 20px;
@@ -100,34 +100,77 @@ header h2 {
     flex-direction: column;
 }
 
-.top {
-    width: calc(100% - 40px);
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 15px;
-    border-top: 2px solid #8e2de2;
-    box-shadow: 5px 5px 3px #c1bfc5;
-    background: white;
-}
-
-.top h2 {
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
-}
-
 .body {
     width: calc(100% - 40px);
+    height: 550px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 15px;
+    border-top: 4px solid white;
+    box-shadow: 7px 5px 3px #9b71ee;
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+}
+
+.body h2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    padding: 20px;
+}
+
+.input-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+#combo-type {
+    width: 300px;
+    margin-left: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    background: transparent;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+}
+
+.page {
+    width: 100%;
     height: 400px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.left {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    margin-top: 15px;
-    border-top: 2px solid #8e2de2;
-    box-shadow: 5px 5px 3px #c1bfc5;
-    background: white;
+    background: red;
 }
+
+.center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: yellow;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: green;
+}
+
