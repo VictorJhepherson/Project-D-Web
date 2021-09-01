@@ -39,8 +39,8 @@ function definePages () {
     const path = document.getElementById('combo-type');
     console.log(path.options[path.selectedIndex].value);
     if(path.options[path.selectedIndex].value == 'manga') {
-        $('.page').load('../subPages/forMangas.html');
+        $('.page').load('../subScreens/manga/subPages/forMangas.html');
     } else if(path.options[path.selectedIndex].value == 'chapter') {
-        $('.page').load('../subPages/forChapters.html');
+        $('.page').load('../subScreens/manga/subPages/forChapters.html');
     } 
 } 
