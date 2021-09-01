@@ -31,12 +31,40 @@ body {
     flex-direction: row;
 }
 
+.header-title {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 header h2 {
     font-size: 2.5rem;
     font-weight: bold;
     color: white;
     margin-left: 20px;
 }
+
+.header-screen {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.manga-screen {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-right: 30px;
+}  
+
+.profile-screen {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-right: 30px;
+} 
 
 .header button {
     background: transparent;
@@ -46,7 +74,7 @@ header h2 {
 }
 
 .material-icons  {
-    font-size: 50px;
+    font-size: 40px;
     color: white;
 }
 
@@ -58,35 +86,6 @@ header h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.sidebar {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 300px;
-    height: calc(100% - 80px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0);
-}
-
-.sidebar a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100%;
-    width: 100%;
-    line-height: 65px;
-    font-size: 20px;
-    color: white;
-    box-sizing: border-box;
-    border-top: 1px solid rgba(255, 255, 255, .1);
-    border-bottom: 1px solid black;
-    text-decoration: none;
 }
 
 /* STRUCT SUBPAGES */

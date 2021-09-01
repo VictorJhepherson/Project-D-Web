@@ -11,18 +11,17 @@
 </head>
 <body>
     <header class="header" id="header" >
-        <h2>YourMangá</h2>
-        <button class="options" id="options" onclick="return seeSideBar();">
-            <span class="material-icons" >menu</span>
-        </button>
+        <div class="header-title">
+            <h2>YourMangá</h2>
+        </div>
+        <div class="header-screen">
+            <a class="manga-screen" href="#" onclick="redirectScreen('../subScreens/manga/index.html');" >Mangá</a>
+            <a class="profile-screen" href="#" onclick="redirectScreen('../subScreens/profile/index.html');" >Perfil</a>
+            <button class="options" id="options" onclick="return signOut();">
+                <span class="material-icons" >logout</span>
+            </button>
+        </div>
     </header>
     <div class="screen" id="screen" ></div>
-    <div class="sidebar" id="sidebar" >
-        <a onclick="redirectScreen('../subScreens/mangaList/index.html');" href="#" >Lista de mangás</a>
-        <a onclick="redirectScreen('../subScreens/mangaAdd/index.html');" href="#" >Adicionar mangás</a>
-        <a onclick="redirectScreen('../subScreens/mangaAnalytic/index.html');" href="#" >Analítico mangás</a>
-        <a onclick="redirectScreen('../subScreens/profile/index.html');" href="#" >Perfil</a>
-        <a href="#" onclick="return signOut();" >Sair</a>
-    </div>
 </body>
 </html>
