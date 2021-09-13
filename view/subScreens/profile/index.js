@@ -21,6 +21,13 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, 
             if(json.token) {
                 alert("Usuário cadastrado.");
 
+                //Limpar inputs
+                document.getElementById('nickname').value = "";
+                document.getElementById('login').value = "";
+                document.getElementById('password').value = "";
+                document.getElementById('phone').value = "";
+                document.getElementById('bday').value = "";
+
                 console.log(json.data.SU_ID + "" + json.data.SU_NICKNAME);
 
                 window.localStorage.setItem('user', json.data.SU_ID.toString());
