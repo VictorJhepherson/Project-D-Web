@@ -3,13 +3,18 @@ const BASE_API = 'https://project-d-api.herokuapp.com';
 const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO) => {
     try {
         if(SU_NICKNAME != '' && SU_LOGINNAME != '' && SU_PASSWORD != '' && SU_PHONENUMBER != '' && SU_DATEBIRTHDAY != '') {
+            if( document.getElementById('isAdmin').checked )
+                SU_TYPE = 1;
+            else
+                SU_TYPE = 2;
+            
             const req = await fetch(`${BASE_API}/auth/register`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO})
+                body: JSON.stringify({SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO, SU_TYPE})
             });
             const json = await req.json();
 
