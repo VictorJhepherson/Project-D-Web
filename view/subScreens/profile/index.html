@@ -1,10 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
 <main class="container">
     <div class="body-left">
         <div class="header-page">
             <h2>DADOS DO PERFIL</h2>
         </div>
         <div class="body-page">
-
+            <label id="usu_ID"> ID do usuário: </label><br>
+            <label id="usu_NICK"> Nickname: </label><br>
+            <label id="usu_email"> Email: </label><br>
+            <label id="usu_phone"> Telefone: </label><br>
+            <label id="usu_bday"> Data aniverssário: </label><br>
         </div>
     </div>
     <div class="body-right">
@@ -12,7 +25,35 @@
             <h2>ADIONAR NOVO USUÁRIO</h2>
         </div>
         <div class="body-page">
-
+            <form action="" method="POST" >
+                <div class="input-field">
+                    <input type="text" name="nickname" id="nickname" placeholder="Digite seu Nickname" >
+                    <div class="underline"></div>
+                </div>
+                <div class="input-field">
+                    <input type="text" name="login" id="login" placeholder="Digite seu Login" >
+                    <div class="underline"></div>
+                </div>
+                <div class="input-field">
+                    <input type="password" name="password" id="password" placeholder="Digite sua Senha" >
+                    <div class="underline"></div>
+                </div>
+                <div class="input-field">
+                    <input type="text" name="phone" id="phone" placeholder="Digite seu Número de telefone" >
+                    <div class="underline"></div>
+                </div>
+                <div class="input-field">
+                    <input type="text" name="bday" id="bday" placeholder="Digite sua data de aniverssário (dd/mm/aaaa)" >
+                    <div class="underline"></div>
+                </div>
+                <div>
+                    <p id="alerta" style="display: none;"></p>
+                </div>
+    
+                <input type="button" value="Cadastrar" onclick="return Register(nickname.value, login.value, password.value, phone.value, bday.value, 1)">
+            </form>
         </div>
     </div>
 </main>
+</body>
+</html>
