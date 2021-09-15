@@ -1,12 +1,46 @@
 const BASE_API = 'https://project-d-api.herokuapp.com';
 
-const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO) => {
+const token = window.localStorage.getItem('token');
+const user = window.localStorage.getItem('user');
+
+const UpdateUserInfo = async(SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER) =>
+{
+    try
+    {
+        if(SU_NICKNAME == '' && SU_LOGINNAME == '' && SU_PASSWORD == '' && SU_PHONENUMBER == '')
+        {
+            alert("Preencha os campos!!");
+            return;
+        }
+
+        const req = await fetch(`${BASE_API}/user/edit`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Baerer ' + token
+            },
+            body: JSON.stringify({user, SU_LOGINNAME, /*SU_PASSWORD,*/ SU_NICKNAME, SU_PHONENUMBER})
+        });
+        const json = await req.json();
+
+        if(json.data)
+        {
+            alert("Json.data is not empty.");
+            // json.data.SU_NICKNAME is UNDEFINED? ?????????????????
+        }
+        else
+        {
+            alert('Não vou possível obter os dados do usuários');
+        }
+
+    } catch (err) {
+        alert(err);
+    }
+}
+const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO, SU_TYPE) => {
     try {
         if(SU_NICKNAME != '' && SU_LOGINNAME != '' && SU_PASSWORD != '' && SU_PHONENUMBER != '' && SU_DATEBIRTHDAY != '') {
-            if( document.getElementById('isAdmin').checked )
-                SU_TYPE = 1;
-            else
-                SU_TYPE = 2;
             
             const req = await fetch(`${BASE_API}/auth/register`, {
                 method: 'POST',

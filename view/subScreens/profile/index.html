@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="index.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/javascript">
+        // Setup user infomation
+        // getUserInfo();
+        document.getElementById('user_name').innerHTML = "<h2>Olá, " + window.localStorage.getItem('nickname');
+
+    </script>
 </head>
 <body>
 <main class="container">
@@ -13,11 +19,21 @@
             <h2>DADOS DO PERFIL</h2>
         </div>
         <div class="body-page">
-            <label id="usu_ID"> ID do usuário: </label><br>
-            <label id="usu_NICK"> Nickname: </label><br>
-            <label id="usu_email"> Email: </label><br>
-            <label id="usu_phone"> Telefone: </label><br>
-            <label id="usu_bday"> Data aniverssário: </label><br>
+            <h2 id="user_name">Ola, {USUÁRIO NICKNAME} </h2>
+        </div>
+
+        <div class="body-page">
+            <form action="" method="POST" >
+            <label id="usu_NICK" name="usu_NICK"> Nickname: </label>
+            <input type="text" name="edit_nick" id="edit_nick" placeholder="Novo nick" ><br>
+            <label id="usu_LOGIN" name="usu_LOGIN"> Login: </label>
+            <input type="text" name="edit_login" id="edit_login" placeholder="Novo login" ><br>
+            <label id="usu_passwd" name="usu_passwd"> Senha: </label>
+            <input type="text" name="edit_passwd" id="edit_passwd" placeholder="Nova senha" ><br> <!-- TODO -->
+            <label id="usu_phone" name="usu_phone"> Telefone: </label>
+            <input type="text" name="edit_phone" id="edit_phone" placeholder="Novo telefone" ><br>
+            <input type="button" value="Atualizar" onclick="return UpdateUserInfo(edit_nick.value, edit_login.value, edit_passwd.value, edit_phone.value)">
+        </form>
         </div>
     </div>
     <div class="body-right">
@@ -27,32 +43,29 @@
         <div class="body-page">
             <form action="" method="POST" >
                 <div class="input-field">
+                    <label id="lb_nickname"> Nickname: </label>
                     <input type="text" name="nickname" id="nickname" placeholder="Digite seu Nickname" >
-                    <div class="underline"></div>
                 </div>
                 <div class="input-field">
+                    <label id="lb_login"> Login: </label>
                     <input type="text" name="login" id="login" placeholder="Digite seu Login" >
-                    <div class="underline"></div>
                 </div>
                 <div class="input-field">
+                    <label id="lb_password"> Password: </label>
                     <input type="password" name="password" id="password" placeholder="Digite sua Senha" >
-                    <div class="underline"></div>
                 </div>
                 <div class="input-field">
+                    <label id="lb_telefone"> Telefone: </label>
                     <input type="text" name="phone" id="phone" placeholder="Digite seu Número de telefone" >
-                    <div class="underline"></div>
                 </div>
                 <div class="input-field">
+                    <label id="lb_bday"> Data na nascimento: (Ex: 20/02/2000)</label>
                     <input type="text" name="bday" id="bday" placeholder="Digite sua data de aniverssário (dd/mm/aaaa)" >
-                    <div class="underline"></div>
                 </div>
                 <div>
                     <p id="alerta" style="display: none;"></p>
                 </div>
-                <div>
-                    <input type="checkbox" id="isAdmin" name="isAdmin" checked><label> É administrador?</label>
-                </div>
-                <input type="button" value="Cadastrar" onclick="return Register(nickname.value, login.value, password.value, phone.value, bday.value, 1)">
+                <input type="button" value="Cadastrar" onclick="return Register(nickname.value, login.value, password.value, phone.value, bday.value, 1, 1)">
             </form>
         </div>
     </div>

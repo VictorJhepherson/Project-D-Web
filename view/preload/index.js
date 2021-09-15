@@ -20,6 +20,7 @@ const refreshToken = async () => {
             if(json.token) {
                 window.localStorage.setItem('user', json.data.SU_ID.toString());
                 window.localStorage.setItem('token', json.token);
+                window.localStorage.setItem('nickname', json.data.SU_NICKNAME.toString());
                 setTimeout(function() {
                     window.location.replace('../home/index.html', { json });
                 }, 2000);
