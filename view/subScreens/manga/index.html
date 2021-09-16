@@ -8,41 +8,23 @@
                 <label >MANGÁ:</label>
                 <input type="text" placeholder="Procure..." >
             </div>
-            <div class="page"></div>
+            <div class="pageList"></div>
         </div>
     </div>
     <div class="body-right">
         <div class="header-page">
-            <h2>ADIONAR MANGÁS</h2>
+            <h2>ADICIONAR MANGÁS</h2>
         </div>
         <div class="body-page">
             <div class="input-area">
                 <label >TIPO:</label>
-                <select>
+                <select id="combo-type" onchange="return definePages();">
                     <option value="" >Selecione...</option>
                     <option value="manga" >Mangá</option>
                     <option value="chapter" >Capítulo</option>
                 </select>
             </div>
-            <div class="page"></div>
+            <div class="pageAdd"></div>
         </div>
     </div>
 </main>
-
-
-
-
-<!--<main class="container">
-    <div class="body">
-        <h2>MANGÁ</h2>
-        <div class="input-area">
-            <label class="title" >Tipo: </label>
-            <select id="combo-type" onchange="definePages();" >
-                <option value="" >Selecione</option>
-                <option value="manga" >Mangá</option>
-                <option value="chapter" >Capítulo</option>
-            </select>
-        </div>
-        <div class="page"></div>
-    </div>
-</main>-->

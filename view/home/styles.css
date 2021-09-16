@@ -73,11 +73,6 @@ header h2 {
     margin-right: 20px;
 }
 
-.material-icons  {
-    font-size: 40px;
-    color: white;
-}
-
 .screen {
     position: fixed;
     bottom: 0;
@@ -106,8 +101,8 @@ header h2 {
     align-items: center;
     flex-direction: column;
     margin-top: 15px;
-    box-shadow: 5px 5px 3px white;
-    background: linear-gradient(45deg, #8e2de2, #6326db)
+    box-shadow: 5px 5px 3px #8e2de2;
+    background: white
 }
 
 .body-right {
@@ -118,8 +113,8 @@ header h2 {
     align-items: center;
     flex-direction: column;
     margin-top: 15px;
-    box-shadow: 7px 5px 3px white;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    box-shadow: 5px 5px 3px #8e2de2;
+    background: white;
 }
 
 .header-page {
@@ -134,7 +129,7 @@ header h2 {
 .header-page h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: white;
+    color: #8e2de2;
 }
 
 .body-page {
@@ -145,6 +140,7 @@ header h2 {
     align-items: flex-start;
     flex-direction: column;
     padding: 20px;
+    border-top: 1px solid black;
 }
 
 /* MANGA ADD */
@@ -170,6 +166,7 @@ header h2 {
     color: white;
     background: transparent;
     border-top: 1px solid white;
+    
 }
 
 .input-area input {
@@ -188,15 +185,196 @@ header h2 {
     color: white;
 }
 
-.page {
+.pageAdd {
     width: 100%;
     height: 400px;
+}
+
+.pageList {
+    width: 100%;
+    height: 400px;
+}
+
+form {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.top-area {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-area {
+    width: 150px;
+    height: 350px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.label-area label {
+    font-size: 0.8;
+    font-weight: bold;
+    color: white;
+}
+
+.input-area-file {
+    width: calc(100% - 150px);
+    height: 350px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.input-area-file input {
+    width: 300px;
+    margin-left: 20px;
+    font-size: 0.8;
+    font-weight: bold;
+    color: white;
+    background: transparent;
+    border-top: 1px solid white;
+}
+
+.input-area-file input::placeholder {
+    font-size: 0.8;
+    font-weight: bold;
+    color: white;
+}
+
+.bottom-area {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+#register {
+    width: 300px;
+    height: 30px;
+    border-radius: 10px;
+    margin-left: 20px;
+    font-size: 0.8;
+    font-weight: bold;
+    color: #8e2de2;
+    background: white;
 }
 
 /* MANGA LIST */
 
 
-/* PROFILE DATA */
+/* PROFILE */
 
+.input-field {
+    position: relative;
+}
 
-/* PROFILE CREATE */
+form .input-field {
+    margin-bottom: 2rem;
+    width: 300px;
+}
+
+.input-field .underline::before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100px;
+    bottom: -5px;
+    left: 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.input-field .underline::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+    background: linear-gradient(to left, #4776e6, #8e54e9);
+}
+
+.input-field input {
+    outline: none;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.input-field input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+form input[type="button"] {
+    width: 300px;
+    margin-top: 2rem;
+    padding: 0.4rem;
+    background: linear-gradient(to left, #4776e6, #8e54e9);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 300;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+form input[type="button"]:hover {
+    letter-spacing: 0.5px;
+    background: linear-gradient(to left, #4776e6, #8e54e9);
+}
+
+.alert {
+    padding: 25px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin: 10px;
+    font-size: 18px;
+    min-width: 350px;
+    display: none;
+}
+
+.message {
+    border-color: #e8273b;
+    color: #FFF;
+    background-color: #ed5565;
+}
+
+.avatar-area {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#avatar-area {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+}
+
+.avatar-area img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.icons-area {
+    width: 90%;
+    height: 80px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
