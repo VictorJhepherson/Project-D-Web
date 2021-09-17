@@ -42,7 +42,10 @@ function redirectScreen (path) {
                     formProfile.innerHTML = 
                     `
                         <div class="avatar-area" >
-                            <img src="${response.AVATAR_ID == 1 ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : response.AVATAR_PATH}" >
+                            <div id="avatar-area" >
+                                <img src="${response.AVATAR_ID == 1 ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : response.AVATAR_PATH}" >
+                                <label style="color: white" >underline</label>
+                            </div>
                             <div class="icons-area">
                                 <button type="button" style="background: transparent;" onclick="return editProfile();" >
                                     <span class="material-icons" style="font-size: 30px; color: black;" >edit</span>
