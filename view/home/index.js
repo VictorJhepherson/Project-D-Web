@@ -99,9 +99,8 @@ const listUserInfo = async () => {
         });
         const json = await req.json();
 
-        if(json.data) {
+        if(json.data) 
             return json.data[0];
-        }
         else
             alert(json.error);
     } catch(err) {
@@ -235,46 +234,40 @@ function definePages () {
     } 
 } 
 
-const registerMangas = () => {
+function setImage(img) {
+    const preview = document.getElementById('preview');
+    const imagePreview = img.files[0];
+    if (imagePreview) {
+        preview.src = URL.createObjectURL(imagePreview)
+      }
+}
+
+async function getAsByteArray(file) {
+    return new Uint8Array(await readFile(file))
+}
+
+function readFile(file) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader()
+  
+      reader.addEventListener("loadend", e => resolve(e.target.result))
+      reader.addEventListener("error", reject)
+  
+      reader.readAsArrayBuffer(file)
+    })
+}
+
+const registerMangas = async () => {
     const token = window.localStorage.getItem('token');
-    const form = document.getElementById('form');
-
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        //const photo = document.getElementById('photo');
-        const pdf = document.getElementById('pdf');
-        const title = document.getElementById('title');
-        const formData = new FormData();
-
-        formData.append('MG_TITLE', title.value);
-        formData.append('MGC_ARCHIVE', pdf.files[0]);
-
-        const req = await fetch(`${BASE_API}/manga`, {
-            method: 'POST',
-            headers: {
-                Accept: '*/*',
-                'Content-Type': 'multipart/form-data; boundary=something',
-                "Authorization": 'Baerer ' + token
-            },
-            body: formData
-        });
-        const json = await req.json();
-
-        if(!json.error) {
-            alert('Mangá cadastrado com sucesso');
-        } else {
-            alert(json.error);
-        }
-    });
-
-
-
-    /*
-    const photo = document.getElementById('photo');
+    //const photo = document.getElementById('photo');
     const pdf = document.getElementById('pdf');
     const title = document.getElementById('title');
 
-    var formData = new FormData();
+    const buffer = await getAsByteArray(pdf.files[0]);
+
+    console.log(buffer);
+
+    /*var formData = new FormData();
     formData.append('MG_TITLE', title.value);
     formData.append('MGC_ARCHIVE', pdf.files[0]);
 

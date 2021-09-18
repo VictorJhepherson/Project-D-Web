@@ -1,17 +1,20 @@
-<form action="" method="POST" enctype="multipart/form-data" id="form" >
-    <div class="top-area">
-        <div class="label-area">
-            <label>TITULO:</label>
-            <label>CAPA:</label>
-            <label>PDF(s):</label>
+<form method="POST" enctype="multipart/form-data" >
+    <div class="avatar-area" >
+        <div class="input-field" style="width: 70%;">
+            <input type="file" name="photo" id="photo" accept="image/png" onchange="return setImage(this)" >
+            <div class="underline"></div>
         </div>
-        <div class="input-area-file">
-            <input type="text" name="title" id="title" placeholder="Digite o titulo" required>
-            <!--<input type="file" name="photo" id="photo">-->
-            <input type="file" name="pdf" id="pdf" required>
+        <div id="avatar-area" >
+            <img id="preview" src="https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg" style="width: 150px; height: 150px;">
         </div>
     </div>
-    <div class="bottom-area">
-        <button type="submit" id="register" >CADASTRAR</button>
+    <div class="input-field" style="width: 100%">
+        <input type="text" name="title" id="title" placeholder="Titulo" >
+        <div class="underline"></div>
     </div>
+    <div class="input-field" style="width: 100%">
+        <input type="file" name="pdf" id="pdf" accept="application/pdf" >
+        <div class="underline"></div>
+    </div>
+    <input type="button" id="register" value="Cadastrar" onclick="return registerMangas()" >
 </form>
