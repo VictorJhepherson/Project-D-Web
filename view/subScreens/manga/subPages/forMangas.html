@@ -1,7 +1,7 @@
-<form method="POST" enctype="multipart/form-data" >
+<form method="POST" >
     <div class="avatar-area" >
         <div class="input-field" style="width: 70%;">
-            <input type="file" name="photo" id="photo" accept="image/png" onchange="return setImage(this)" >
+            <input type="file" name="photo" id="photo" accept="image/png, image/jpeg" onchange="return setImage(this)" multiple>
             <div class="underline"></div>
         </div>
         <div id="avatar-area" >
@@ -12,9 +12,5 @@
         <input type="text" name="title" id="title" placeholder="Titulo" >
         <div class="underline"></div>
     </div>
-    <div class="input-field" style="width: 100%">
-        <input type="file" name="pdf" id="pdf" accept="application/pdf" >
-        <div class="underline"></div>
-    </div>
-    <input type="button" id="register" value="Cadastrar" onclick="return registerMangas()" >
+    <input type="button" id="register" value="Cadastrar" onclick="return registerMangas()">
 </form>

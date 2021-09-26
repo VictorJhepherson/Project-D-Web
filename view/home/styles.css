@@ -153,6 +153,16 @@ header h2 {
     color: rgba(0, 0, 0, 0.7);
 }
 
+#combo-manga {
+    width: 100%;
+}
+
+#combo-manga input {
+    outline: none;
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
+}
+
 .input-field {
     position: relative;
 }
@@ -203,6 +213,18 @@ form .input-field {
 
 .input-field input::placeholder {
     color: rgba(0, 0, 0, 0.5);
+}
+
+.search {
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center;
+}
+
+.searchButton {
+    background: transparent;
+    width: 25px;
+    height: 25px;
 }
 
 form input[type="button"] {
@@ -258,6 +280,52 @@ form {
 .pageList {
     width: 100%;
     height: 400px;
+}
+
+.mangaList {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.mangaItem {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    border-bottom: 1px solid black;
+}
+
+.mangaItem img {
+    width: 80px;
+    height: 80px;
+    margin-left: 10px;
+}
+
+.mangaData {
+    width: calc(100% - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mangaData label {
+    outline: none;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.mangaData label:first-child {
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 /* MANGA LIST */
