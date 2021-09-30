@@ -328,6 +328,13 @@ form {
     font-weight: bold;
 }
 
+.notFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 /* MANGA LIST */
 
 

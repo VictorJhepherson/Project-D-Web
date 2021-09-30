@@ -86,7 +86,7 @@ function redirectScreen (path) {
             var mangaList = document.getElementById('mangaList');
             var data = listMangas();
             data.then((response) => {
-                if(response.data == null || response.data == undefined) {
+                if(response.data.length <= 0) {
                     mangaList.innerHTML += 
                     `
                         <span class="material-icons" style="font-size: 30px; color: red;" >do_disturb</span>
@@ -100,10 +100,10 @@ function redirectScreen (path) {
                         mangaList.innerHTML += 
                         `
                             <div class="mangaItem" >
-                                <img src="https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg" >
+                                <img src="${item[k].MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : item[k].MGP_PATH}" >
                                 <div class="mangaData" > 
-                                    <label>${item.MG_TITLE}</label>
-                                    <label>Qtd. Capítulos: ${item.CHAPTERS}</label>
+                                    <label>${item[k].MG_TITLE}</label>
+                                    <label>Qtd. Capítulos: ${item[k].MGC_SEQCHAPTER == null ? 0 : item[k].MGC_SEQCHAPTER}</label>
                                 </div>
                             </div>
                         `;
@@ -284,7 +284,7 @@ const listMangas = async () => {
         const json = await req.json();
 
         if(json.success)
-            return json
+            return json;
         else
             return json.success
     } catch(err) {
@@ -301,24 +301,23 @@ function definePages () {
         $('.pageAdd').load('../subScreens/manga/subPages/forChapters.html', function() {
             var data = listMangas();
             data.then((response) => {
-                if(response.data == null || response.data == undefined) {
-                    var myForm = document.getElementById('myForm');
+                if(response.data.length <= 0) {
+                    var myForm = document.getElementById('mangaChapter');
 
                     myForm.innerHTML += 
                     `
-                        <span class="material-icons" style="font-size: 30px; color: red;" >do_disturb</span>
-                        <label>Não encontrado mangás para o cadastro de novos capítulos<label>
+                        <div class="notFound">
+                            <span class="material-icons" style="font-size: 30px; color: red;" >do_disturb</span>
+                            <label>Não encontrado mangás para o cadastro de novos capítulos<label>
+                        </div>
                     `;
                 } else {
-                    var selectArea = document.getElementById('area-cb-manga');
-                    var select = document.createElement('select');
-                    select.id = 'combo-manga';
-                    selectArea.appendChild(select);
+                    var select = document.getElementById('combo-manga');
                     var list = [];
                     list.push(response.data);
 
                     list.map((item, k) => {
-                        select.options.add(new Option(item.MG_TITLE, item.MG_ID));
+                        select.options.add(new Option(item[k].MG_TITLE, item[k].MG_ID));
                     });
                 }
             }).catch((err) => {
@@ -334,24 +333,26 @@ function defineManga() {
 
     var data = listMangaById(id);
     data.then((response) => {
-        const mangaChapter = document.getElementById('mangaChapter');
+        const mangaChapter = document.getElementById('myForm');
 
-        mangaChapter.innerHTML =
+        mangaChapter.innerHTML +=
         `
-            <div id="avatar-area" >
-                <img src="${response.MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : response.MGP_PATH}" >
-                <label style="color: white" >underline</label>
+            <div class="avatar-area" >
+                <div id="avatar-area" >
+                    <img src="${response.MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : response.MGP_PATH}" >
+                    <label style="color: white" >underline</label>
+                </div>
             </div>
             <div class="input-field" style="width: 100%" >
                 <input type="text" value="${response.MG_TITLE}" disabled>
                 <div class="underline"></div>
             </div>
             <div class="input-field" style="width: 100%" >
-                <input type="text" id="chapter" value="${response.CHAPTERS}" disabled>
+                <input type="text" id="chapter" value="${response.MGC_SEQCHAPTER == null ? 0 : response.MGC_SEQCHAPTER }" disabled>
                 <div class="underline"></div>
             </div>
             <div class="input-field" style="width: 100%">
-                <input type="file" name="img" id="img" accept="image/png, image/jpeg" multiple>
+                <input type="file" name="pdf" id="pdf" accept="application/pdf" >
                 <div class="underline"></div>
             </div>
             <input type="button" id="register" value="Cadastrar" onclick="return registerChapters(${id}, chapter.value)" >
@@ -369,86 +370,63 @@ function setImage(img) {
     }
 }
 
-function encodeBase64(files) {
-    var base64 = new Array;
-    var myArray = Array.from(files);
-    var promise;
-
-    myArray.sort(function(a, b) {
-        return a.name > b.name;
-    });
-
-    for(var i = 0; i < myArray.length; i++ ) {
-        promise = new Promise((resolve, reject) => {
-            (function(file) {
-                var reader = new FileReader();
-                    reader.onloadend = function(e) { 
-                        base64.push(e.target.result);
-
-                        resolve(base64);
-                    };
-                    reader.readAsDataURL(file);
-            })(myArray[i]);
-        });
-    }
-
-    return promise;
-}
-
 const registerMangas = async () => {
-    const token = window.localStorage.getItem('token');
-    const photo = document.getElementById('photo').files;
-    const image = await encodeBase64(photo);
-    const MG_TITLE = document.getElementById('title').value;
-    const MG_PHOTO = image[0];
-
     try {
-        const req = await fetch(`${BASE_API}/manga/manga`, {
+        const token = window.localStorage.getItem('token');
+        const MG_PHOTO = document.getElementById('photo').files[0];
+        const MG_TITLE = document.getElementById('title').value;
+
+        var formData = new FormData();
+        formData.append('MG_TITLE', MG_TITLE);
+        formData.append('MG_PHOTO', MG_PHOTO);
+
+        const req = await fetch(`${BASE_API}/manga/title`, {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                Accept: '*/*',
                 "Authorization": 'Baerer ' + token
             },
-            body: JSON.stringify({MG_TITLE, MG_PHOTO})
+            body: formData
         });
         const json = await req.json();
 
         if(json.success) {
-            alert('Mangá cadastrado com sucesso');
+            alert(json.mensagem);
         } else {
             console.log(json.error);
         }
     } catch (err) {
-        alert(err);
+        console.log(err);
     }
 }
 
-const registerChapters = async (MG_ID, MGC_SEQCHAPTER) => {
-    const token = window.localStorage.getItem('token');
-    const files = document.getElementById('img').files;
-    const images = await encodeBase64(files);
-
-    //TODO: for para cada imagem selecionada no input
-
+const registerChapters = async (MG_ID, SEQ) => {
     try {
+        const token = window.localStorage.getItem('token');
+        const MGC_ARCHIVE = document.getElementById('pdf').files[0];
+        const MGC_SEQCHAPTER = parseInt(SEQ, 10) + 1;
+
+        var formData = new FormData();
+        formData.append('MG_ID', MG_ID);
+        formData.append('MGC_ARCHIVE', MGC_ARCHIVE);
+        formData.append('MGC_SEQCHAPTER', MGC_SEQCHAPTER)
+
         const req = await fetch(`${BASE_API}/manga/chapters`, {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                Accept: '*/*',
                 "Authorization": 'Baerer ' + token
             },
-            body: JSON.stringify({ MG_ID, MGF_ARCHIVE, MGC_SEQCHAPTER })
+            body: formData
         });
         const json = await req.json();
 
         if(json.success) {
-            alert('Capítulo cadastrado com sucesso');
+            alert(json.mensagem);
         } else {
-            alert(json.error);
+            console.log(json.error);
         }
     } catch (err) {
-        alert(err);
+        console.log(err);
     }
 }

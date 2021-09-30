@@ -1,4 +1,10 @@
 <form id="myForm" method="POST" >
-    <div class="input-field" id="area-cb-manga" style="width: 100%;" ></div>
-    <div class="mangaChapter" id="mangaChapter"></div>
+    <div class="input-field" id="area-cb-manga" style="width: 100%; margin-top: 2rem;" >
+        <select id="combo-manga" onchange="return defineManga();">
+            <option value="" >Selecione</option>
+        </select>
+    </div>
+    <div class="pageList" >
+        <div class="mangaChapter" id="mangaChapter"></div>
+    </div>
 </form>
