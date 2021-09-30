@@ -298,8 +298,8 @@ form {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0);
     border-bottom: 1px solid black;
+    margin-bottom: 10px;
 }
 
 .mangaItem img {
@@ -319,7 +319,7 @@ form {
 .mangaData label {
     outline: none;
     font-size: 1rem;
-    color: white;
+    color: black;
     margin-bottom: 10px;
 }
 
@@ -335,8 +335,14 @@ form {
     flex-direction: column;
 }
 
-/* MANGA LIST */
+/* MANGA CHAPTER */
 
+.mangaChapter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 /* PROFILE */
 
@@ -351,10 +357,9 @@ form {
 }
 
 .message {
-    border-color: #e8273b;
     color: #FFF;
-    background-color: #ed5565;
 }
+
 
 .avatar-area {
     width: 100%;

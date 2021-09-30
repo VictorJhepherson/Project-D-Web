@@ -13,7 +13,7 @@ const SignIn = async (SU_NICKNAME, SU_PASSWORD) => {
             });
             const json = await req.json();
 
-            if(json.token) {
+            if(json.success) {
                 console.log(json.data.SU_ID);
                 window.localStorage.setItem('user', json.data.SU_ID.toString());
                 window.localStorage.setItem('token', json.token);
@@ -21,22 +21,33 @@ const SignIn = async (SU_NICKNAME, SU_PASSWORD) => {
                 window.location.replace('../home/index.html', { json });
             } else {
                 const setMessage = document.getElementById('alerta');
+                setMessage.style.borderColor = '#E8273B';
+                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ed5565; color: white; font-size: 1rem;" >`;
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem;" >`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
             }
         } else {
             const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#E8273B';
+            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="Preencha os campos!" style="background: #ed5565; color: white; font-size: 1rem;" >`;
+            setMessage.innerHTML = `<input type="text" value="Preencha os campos!" style="background: #ED5565; color: white; font-size: 1rem;" >`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B';
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 

@@ -19,6 +19,8 @@ const signOut = async () => {
 
         if(json.success) {
             window.localStorage.setItem('token', '');
+            window.localStorage.setItem('user', '');
+            window.localStorage.setItem('loginname', '');
             window.location.replace('../signIn/index.html');
         } else {
             alert('Não foi possível fazer o logout!');
@@ -75,12 +77,20 @@ function redirectScreen (path) {
                         <div class="input-field" style="width: 100%" >
                             <input type="text" value="${response.SU_TYPE == 1 ? 'Adminstrador' : 'Comum'}" disabled>
                             <div class="underline"></div>
-                        </div>           
+                        </div>
+                        <div class="alert message" id="alerta-profile" ></div>            
                         <input type="button" id="update" value="Atualizar" style="display: none;" onclick="return UpdateUserInfo(edit_nickname.value, edit_email.value, edit_phone.value)">
                     `;
                 }
             }).catch((err) => {
-                alert(err);
+                const setMessage = document.getElementById('alerta-profile');
+                setMessage.style.borderColor = '#E8273B'; 
+                setMessage.style.backgroundColor = '#ED5565';
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
             })
         } else if(path == '../subScreens/manga/index.html') {
             var mangaList = document.getElementById('mangaList');
@@ -96,21 +106,28 @@ function redirectScreen (path) {
                     var list = [];
                     list.push(response.data);
 
-                    list.map((item, k) => {
+                    list[0].forEach((item, k) => {
                         mangaList.innerHTML += 
                         `
                             <div class="mangaItem" >
-                                <img src="${item[k].MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : item[k].MGP_PATH}" >
+                                <img src="${item.MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : item.MGP_PATH}" >
                                 <div class="mangaData" > 
-                                    <label>${item[k].MG_TITLE}</label>
-                                    <label>Qtd. Capítulos: ${item[k].MGC_SEQCHAPTER == null ? 0 : item[k].MGC_SEQCHAPTER}</label>
+                                    <label>${item.MG_TITLE}</label>
+                                    <label>Qtd. Capítulos: ${item.MGC_SEQCHAPTER == null ? 0 : item.MGC_SEQCHAPTER}</label>
                                 </div>
                             </div>
                         `;
                     });
                 }
             }).catch((err) => {
-                alert(err);
+                const setMessage = document.getElementById('alerta-profile');
+                setMessage.style.borderColor = '#E8273B'; 
+                setMessage.style.backgroundColor = '#ED5565';
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
             });
         }
     });
@@ -131,10 +148,25 @@ const listUserInfo = async () => {
 
         if(json.success) 
             return json.data[0];
-        else
-            alert(json.error);
+        else {
+            const setMessage = document.getElementById('alerta-profile');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
     } catch(err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta-profile');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -187,7 +219,14 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
     try
     {
         if(SU_NICKNAME == '' || SU_LOGINNAME == '' || SU_PHONENUMBER == '') {
-            alert("Realize alguma alteração!");
+            const setMessage = document.getElementById('alerta-profile');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
             return;
         }
 
@@ -207,10 +246,25 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
 
         if(json.success) {
             window.location.replace('../home/index.html');
-        } else
-            alert('Não foi possível atualizar os dados do usuário');
+        } else {
+            const setMessage = document.getElementById('alerta-profile');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
     } catch (err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta-profile');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -232,23 +286,34 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, 
             if(json.success) {
                 window.location.replace('../home/index.html');
             } else {
-                const setMessage = document.getElementById('alerta');
+                const setMessage = document.getElementById('alerta-profile');
+                setMessage.style.borderColor = '#E8273B'; 
+                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ed5565; color: white; font-size: 1rem;" >`;
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
             }
         } else {
-            const setMessage = document.getElementById('alerta');
+            const setMessage = document.getElementById('alerta-profile');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<p style="background: #ed5565; color: white; font-size: 1rem;" > Reveja os campos. </p>`;
+            setMessage.innerHTML = `<p style="background: #ED5565; color: white; font-size: 1rem;" >Campos em branco</p>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -266,10 +331,25 @@ const listMangaById = async (MG_ID) => {
 
         if(json.success) 
             return json.data[0];
-        else
-            alert(json.error);
+        else {
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
     } catch(err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -285,10 +365,25 @@ const listMangas = async () => {
 
         if(json.success)
             return json;
-        else
-            return json.success
+        else {
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
     } catch(err) {
-        alert(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -316,12 +411,19 @@ function definePages () {
                     var list = [];
                     list.push(response.data);
 
-                    list.map((item, k) => {
-                        select.options.add(new Option(item[k].MG_TITLE, item[k].MG_ID));
+                    list[0].forEach((item, k) => {
+                        select.options.add(new Option(item.MG_TITLE, item.MG_ID));
                     });
                 }
             }).catch((err) => {
-                alert(err);
+                const setMessage = document.getElementById('alerta');
+                setMessage.style.borderColor = '#E8273B'; 
+                setMessage.style.backgroundColor = '#ED5565';
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
             });
         });
     } 
@@ -333,9 +435,9 @@ function defineManga() {
 
     var data = listMangaById(id);
     data.then((response) => {
-        const mangaChapter = document.getElementById('myForm');
+        const mangaChapter = document.getElementById('mangaChapter');
 
-        mangaChapter.innerHTML +=
+        mangaChapter.innerHTML =
         `
             <div class="avatar-area" >
                 <div id="avatar-area" >
@@ -358,7 +460,14 @@ function defineManga() {
             <input type="button" id="register" value="Cadastrar" onclick="return registerChapters(${id}, chapter.value)" >
         `;
     }).catch((err) => {
-        alert(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     });
 }
 
@@ -391,12 +500,33 @@ const registerMangas = async () => {
         const json = await req.json();
 
         if(json.success) {
-            alert(json.mensagem);
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#06EE06'; 
+            setMessage.style.backgroundColor = '#00FA9A';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #00FA9A; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
         } else {
-            console.log(json.error);
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
         }
     } catch (err) {
-        console.log(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }
 
@@ -422,11 +552,32 @@ const registerChapters = async (MG_ID, SEQ) => {
         const json = await req.json();
 
         if(json.success) {
-            alert(json.mensagem);
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#06EE06'; 
+            setMessage.style.backgroundColor = '#00FA9A';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #00FA9A; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
         } else {
-            console.log(json.error);
+            const setMessage = document.getElementById('alerta');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
         }
     } catch (err) {
-        console.log(err);
+        const setMessage = document.getElementById('alerta');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     }
 }

@@ -54,9 +54,8 @@
                     <input type="text" name="bday" id="bday" placeholder="Aniversário" >
                     <div class="underline"></div>
                 </div>
-                <div>
-                    <p id="alerta" style="display: none;"></p>
-                </div>
+                <div class="alert messageFail" id="alerta-profile" ></div> 
+                <div class="alert messageSuccess" id="alerta-profile" ></div> 
                 <input type="button" value="Cadastrar" onclick="return Register(nickname.value, email.value, password.value, phone.value, bday.value, 1)">
             </form>
         </div>
