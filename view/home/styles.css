@@ -360,6 +360,11 @@ form {
     color: #FFF;
 }
 
+.messages {
+    width: 100%;
+    margin: 10px;
+    display: none;
+}
 
 .avatar-area {
     width: 100%;

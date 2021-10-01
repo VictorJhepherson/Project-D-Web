@@ -36,7 +36,14 @@ function redirectScreen (path) {
             var data = listUserInfo();
             data.then((response) => {
                 if(response.SU_ID == null || response.SU_ID == undefined) {
-                    alert('Não foi possível localizar o usuário');
+                    const setMessage = document.getElementById('msg-profile-edit');
+                    setMessage.style.borderColor = '#E8273B'; 
+                    setMessage.style.backgroundColor = '#ED5565';
+                    setMessage.style.display = 'flex';
+                    setMessage.innerHTML = `<input type="text" value="Usuário não encontrado" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                    setTimeout(function() {
+                        setMessage.style.display = 'none';
+                    }, 3000);
                 } else {
                     window.localStorage.setItem('loginname', response.SU_LOGINNAME);
 
@@ -78,16 +85,16 @@ function redirectScreen (path) {
                             <input type="text" value="${response.SU_TYPE == 1 ? 'Adminstrador' : 'Comum'}" disabled>
                             <div class="underline"></div>
                         </div>
-                        <div class="alert message" id="alerta-profile" ></div>            
+                        <div class="messages" id="msg-profile-edit" ></div>            
                         <input type="button" id="update" value="Atualizar" style="display: none;" onclick="return UpdateUserInfo(edit_nickname.value, edit_email.value, edit_phone.value)">
                     `;
                 }
             }).catch((err) => {
-                const setMessage = document.getElementById('alerta-profile');
+                const setMessage = document.getElementById('msg-profile-edit');
                 setMessage.style.borderColor = '#E8273B'; 
                 setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
@@ -120,11 +127,11 @@ function redirectScreen (path) {
                     });
                 }
             }).catch((err) => {
-                const setMessage = document.getElementById('alerta-profile');
+                const setMessage = document.getElementById('msg-list');
                 setMessage.style.borderColor = '#E8273B'; 
                 setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
@@ -149,21 +156,21 @@ const listUserInfo = async () => {
         if(json.success) 
             return json.data[0];
         else {
-            const setMessage = document.getElementById('alerta-profile');
+            const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch(err) {
-        const setMessage = document.getElementById('alerta-profile');
+        const setMessage = document.getElementById('msg-profile-edit');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -219,11 +226,11 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
     try
     {
         if(SU_NICKNAME == '' || SU_LOGINNAME == '' || SU_PHONENUMBER == '') {
-            const setMessage = document.getElementById('alerta-profile');
+            const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
@@ -247,21 +254,21 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
         if(json.success) {
             window.location.replace('../home/index.html');
         } else {
-            const setMessage = document.getElementById('alerta-profile');
+            const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        const setMessage = document.getElementById('alerta-profile');
+        const setMessage = document.getElementById('msg-profile-edit');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -286,31 +293,31 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, 
             if(json.success) {
                 window.location.replace('../home/index.html');
             } else {
-                const setMessage = document.getElementById('alerta-profile');
+                const setMessage = document.getElementById('msg-profile-add');
                 setMessage.style.borderColor = '#E8273B'; 
                 setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
             }
         } else {
-            const setMessage = document.getElementById('alerta-profile');
+            const setMessage = document.getElementById('msg-profile-add');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<p style="background: #ED5565; color: white; font-size: 1rem;" >Campos em branco</p>`;
+            setMessage.innerHTML = `<input type="text" value="Preencha os campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        const setMessage = document.getElementById('alerta');
+        const setMessage = document.getElementById('msg-profile-add');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -332,21 +339,21 @@ const listMangaById = async (MG_ID) => {
         if(json.success) 
             return json.data[0];
         else {
-            const setMessage = document.getElementById('alerta');
+            const setMessage = document.getElementById('msg-add');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch(err) {
-        const setMessage = document.getElementById('alerta');
+        const setMessage = document.getElementById('msg-add');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -366,21 +373,21 @@ const listMangas = async () => {
         if(json.success)
             return json;
         else {
-            const setMessage = document.getElementById('alerta');
+            const setMessage = document.getElementById('msg-list');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch(err) {
-        const setMessage = document.getElementById('alerta');
+        const setMessage = document.getElementById('msg-list');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -416,11 +423,11 @@ function definePages () {
                     });
                 }
             }).catch((err) => {
-                const setMessage = document.getElementById('alerta');
+                const setMessage = document.getElementById('msg-add');
                 setMessage.style.borderColor = '#E8273B'; 
                 setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+                setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
@@ -460,14 +467,14 @@ function defineManga() {
             <input type="button" id="register" value="Cadastrar" onclick="return registerChapters(${id}, chapter.value)" >
         `;
     }).catch((err) => {
-        const setMessage = document.getElementById('alerta');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
-        setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
-        setTimeout(function() {
-            setMessage.style.display = 'none';
-        }, 3000);
+        const setMessage = document.getElementById('msg-add');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
     });
 }
 
@@ -500,30 +507,30 @@ const registerMangas = async () => {
         const json = await req.json();
 
         if(json.success) {
-            const setMessage = document.getElementById('alerta');
-            setMessage.style.borderColor = '#06EE06'; 
-            setMessage.style.backgroundColor = '#00FA9A';
+            const setMessage = document.getElementById('msg-add');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #00FA9A; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #00FA9A; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         } else {
-            const setMessage = document.getElementById('alerta');
+            const setMessage = document.getElementById('msg-add');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        const setMessage = document.getElementById('alerta');
+        const setMessage = document.getElementById('msg-add');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);
@@ -552,30 +559,123 @@ const registerChapters = async (MG_ID, SEQ) => {
         const json = await req.json();
 
         if(json.success) {
-            const setMessage = document.getElementById('alerta');
-            setMessage.style.borderColor = '#06EE06'; 
-            setMessage.style.backgroundColor = '#00FA9A';
+            const setMessage = document.getElementById('msg-add');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #00FA9A; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #00FA9A; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         } else {
-            const setMessage = document.getElementById('alerta');
+            const setMessage = document.getElementById('msg-add');
             setMessage.style.borderColor = '#E8273B'; 
             setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
         }
     } catch (err) {
-        const setMessage = document.getElementById('alerta');
+        const setMessage = document.getElementById('msg-add');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
-        setMessage.innerHTML = `<input type="text" value="${err}" style="background: #ED5565; color: white; font-size: 1rem; width: 100%;" >`;
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+
+const searchManga = () => {
+    const title = document.getElementById('title').value;
+    var mangaList = document.getElementById('mangaList');
+    if(title == '' || title == null) {
+        const setMessage = document.getElementById('msg-list');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="Digite algum título antes de pesquisar" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
+    } else {
+        var data = listMangaByName(title);
+        data.then((response) => {
+            if(response.data[0].length < 0) {
+    
+                mangaList.innerHTML += 
+                `
+                    <div class="notFound">
+                        <span class="material-icons" style="font-size: 30px; color: red;" >do_disturb</span>
+                        <label>Não encontrado Mangás com esse Título<label>
+                    </div>
+                `;
+            } else {
+                var list = [];
+                list.push(response.data);
+    
+                list[0].forEach((item, k) => {
+                    mangaList.innerHTML = 
+                    `
+                        <div class="mangaItem" >
+                            <img src="${item.MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : item.MGP_PATH}" >
+                            <div class="mangaData" > 
+                                <label>${item.MG_TITLE}</label>
+                                <label>Qtd. Capítulos: ${item.MGC_SEQCHAPTER == null ? 0 : item.MGC_SEQCHAPTER}</label>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }).catch((err) => {
+            const setMessage = document.getElementById('msg-list');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        });
+    }
+}
+
+const listMangaByName = async (MG_TITLE) => {
+    try {
+        const token = window.localStorage.getItem('token');
+
+        const req = await fetch(`${BASE_API}/manga/byName`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                "Authorization": 'Baerer ' + token
+            },
+            body: JSON.stringify({ MG_TITLE })
+        });
+        const json = await req.json();
+
+        if(json.success)
+            return json;
+        else {
+            const setMessage = document.getElementById('msg-list');
+            setMessage.style.borderColor = '#E8273B'; 
+            setMessage.style.backgroundColor = '#ED5565';
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
+    } catch(err) {
+        const setMessage = document.getElementById('msg-list');
+        setMessage.style.borderColor = '#E8273B'; 
+        setMessage.style.backgroundColor = '#ED5565';
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
         }, 3000);

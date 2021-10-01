@@ -6,15 +6,17 @@
         <div class="body-page">
             <div class="input-field" style="width: 100%">
                 <div class="search" >
-                    <input type="text" placeholder="Titulo" >
-                    <button class="searchButton" >
+                    <input type="text" id="title" name="title" placeholder="Titulo" >
+                    <button class="searchButton" onclick="return searchManga()">
                         <span class="material-icons" style="font-size: 20px; color: black;" >search</span>
                     </button>
                 </div>
                 <div class="underline"></div>
             </div>
             <div class="pageList" >
-                <div class="mangaList" id="mangaList"></div>
+                <div class="mangaList" id="mangaList">
+                    <div class="messages" id="msg-list" ></div> 
+                </div>
             </div>
         </div>
     </div>
@@ -31,7 +33,11 @@
                 </select>
                 <div class="underline"></div>
             </div>
-            <div class="pageAdd"></div>
+            <div class="pageList" >
+                <div class="pageAdd">
+                    <div class="messages" id="msg-add" ></div> 
+                </div>
+            </div>
         </div>
     </div>
 </main>
