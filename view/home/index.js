@@ -223,6 +223,10 @@ const validateFields = (loginname, password, datebirthday, phonenumber) => {
     return validateResult;
 }
 
+function reloadSite() {
+    document.location.reload(true);
+}
+
 /* PROFILE */
 
 const listUserInfo = async () => {
