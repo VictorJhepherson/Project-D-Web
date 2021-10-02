@@ -23,5 +23,26 @@
         </div>
     </header>
     <div class="screen" id="screen" ></div>
+    <div id="dv-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Atualizar senha</h2>
+                <button type="button" style="background: transparent;" onclick="return closeModal();" >
+                    <span class="material-icons" style="font-size: 30px; color: black;" >close</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="input-field" style="width: 100%" >
+                    <input type="text" id="edit_password" name="edit_password" placeholder="Senha" >
+                    <div class="underline"></div>
+                </div>
+                <div class="messages" id="msg-profile-pass" style="margin-top: 20px;"></div> 
+
+                <input type="button" id="updatePass" value="Atualizar" onclick="return updatePassword(edit_password.value);">
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

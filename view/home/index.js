@@ -20,7 +20,6 @@ const signOut = async () => {
         if(json.success) {
             window.localStorage.setItem('token', '');
             window.localStorage.setItem('user', '');
-            window.localStorage.setItem('loginname', '');
             window.location.replace('../signIn/index.html');
         } else {
             alert('Não foi possível fazer o logout!');
@@ -37,16 +36,12 @@ function redirectScreen (path) {
             data.then((response) => {
                 if(response.SU_ID == null || response.SU_ID == undefined) {
                     const setMessage = document.getElementById('msg-profile-edit');
-                    setMessage.style.borderColor = '#E8273B'; 
-                    setMessage.style.backgroundColor = '#ED5565';
                     setMessage.style.display = 'flex';
                     setMessage.innerHTML = `<input type="text" value="Usuário não encontrado" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                     setTimeout(function() {
                         setMessage.style.display = 'none';
                     }, 3000);
                 } else {
-                    window.localStorage.setItem('loginname', response.SU_LOGINNAME);
-
                     const formProfile = document.getElementById('form-profile');
                     formProfile.innerHTML = 
                     `
@@ -59,7 +54,7 @@ function redirectScreen (path) {
                                 <button type="button" style="background: transparent;" onclick="return editProfile();" >
                                     <span class="material-icons" style="font-size: 30px; color: black;" >edit</span>
                                 </button>
-                                <button type="button" style="background: transparent; margin-left: 10px;" >
+                                <button type="button" style="background: transparent; margin-left: 10px;" onclick="return openModal();" >
                                     <span class="material-icons" style="font-size: 30px; color: black;" >lock</span>
                                 </button>
                             </div>
@@ -85,14 +80,14 @@ function redirectScreen (path) {
                             <input type="text" value="${response.SU_TYPE == 1 ? 'Adminstrador' : 'Comum'}" disabled>
                             <div class="underline"></div>
                         </div>
-                        <div class="messages" id="msg-profile-edit" ></div>            
+                        <div class="messages" id="msg-profile-edit" ></div> 
+                        
+                        
                         <input type="button" id="update" value="Atualizar" style="display: none;" onclick="return UpdateUserInfo(edit_nickname.value, edit_email.value, edit_phone.value)">
                     `;
                 }
             }).catch((err) => {
                 const setMessage = document.getElementById('msg-profile-edit');
-                setMessage.style.borderColor = '#E8273B'; 
-                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
                 setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
@@ -113,6 +108,8 @@ function redirectScreen (path) {
                     var list = [];
                     list.push(response.data);
 
+                    mangaList.innerHTML = `<div class="messages" id="msg-list" ></div>`;
+
                     list[0].forEach((item, k) => {
                         mangaList.innerHTML += 
                         `
@@ -128,8 +125,6 @@ function redirectScreen (path) {
                 }
             }).catch((err) => {
                 const setMessage = document.getElementById('msg-list');
-                setMessage.style.borderColor = '#E8273B'; 
-                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
                 setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
@@ -138,6 +133,94 @@ function redirectScreen (path) {
             });
         }
     });
+}
+
+function openModal () {
+    const modal = document.getElementById('dv-modal');
+
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    const modal = document.getElementById('dv-modal');
+
+    modal.style.display = 'none';
+}
+
+var validateResult = {
+    success: true,
+    error: ''
+};
+
+const clearResult = () => {
+    validateResult.error = '';
+    validateResult.success = true;
+}
+
+const emailValidate = (loginname) => {
+    var usuario = loginname.substring(0, loginname.indexOf("@"));
+    var dominio = loginname.substring(loginname.indexOf("@") + 1, loginname.length);
+
+    if ((usuario.length >= 1) &&
+        (dominio.length >= 3) &&
+        (usuario.search("@") == -1) &&
+        (dominio.search("@") == -1) &&
+        (usuario.search(" ") == -1) &&
+        (dominio.search(" ") == -1) &&
+        (dominio.search(".") != -1) &&
+        (dominio.indexOf(".") >= 1) &&
+        (dominio.lastIndexOf(".") < dominio.length - 1)) 
+    {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const dateValidate = (datebirthday) => {
+    var regex = /^\d{4}-\d\d-\d\d$/;
+    if(regex.test(datebirthday))
+        return true;
+    else 
+        return false;
+};
+
+const telValidate = (phonenumber) => {
+    var phoneAjustado = '';
+
+    const ddd = phonenumber.slice(0, 2);
+    const parte1 = phonenumber.slice(2, 7); //19 98834-2924
+    const parte2 = phonenumber.slice(7, 11);
+
+    return phoneAjustado = `(${ddd}) ${parte1}-${parte2}`;
+}
+
+const validateFields = (loginname, password, datebirthday, phonenumber) => {
+    console.log(datebirthday);
+    clearResult();
+    if(!emailValidate(loginname)) {
+        validateResult.error = 'O EMAIL é inválido!',
+        validateResult.success = false;
+        return validateResult;
+    } else if(password.length < 6 || password.length > 10) {
+        validateResult.error = 'A SENHA deve ter de 6 a 10 caracteres!',
+        validateResult.success = false;
+        return validateResult;
+    } else if(datebirthday.length < 10) {
+        validateResult.error = 'A DATA foi preenchida incorretamente!',
+        validateResult.success = false;
+        return validateResult;
+    } else if(!dateValidate(datebirthday)) {
+        validateResult.error = 'A DATA não é válida!',
+        validateResult.success = false;
+        return validateResult;
+    } else if(phonenumber.length < 11) {
+        validateResult.error = 'O TELEFONE foi preenchido incorretamente!',
+        validateResult.success = false;
+        return validateResult;
+    }
+
+    return validateResult;
 }
 
 /* PROFILE */
@@ -157,8 +240,6 @@ const listUserInfo = async () => {
             return json.data[0];
         else {
             const setMessage = document.getElementById('msg-profile-edit');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -167,8 +248,6 @@ const listUserInfo = async () => {
         }
     } catch(err) {
         const setMessage = document.getElementById('msg-profile-edit');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -218,55 +297,48 @@ function setAvatar() {
     }
 }
 
-const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
-    const token = window.localStorage.getItem('token');
-    const SU_ID = window.localStorage.getItem('user');
-    const loginname = window.localStorage.getItem('loginname');
-    const SU_PHOTO = null;
-    try
-    {
-        if(SU_NICKNAME == '' || SU_LOGINNAME == '' || SU_PHONENUMBER == '') {
-            const setMessage = document.getElementById('msg-profile-edit');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
+const updatePassword = async (SU_PASSWORD) => {
+    try {
+        const token = window.localStorage.getItem('token');
+
+        if(SU_PASSWORD.length < 6 || SU_PASSWORD.length > 10) {
+            const setMessage = document.getElementById('msg-profile-pass');
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setMessage.innerHTML = `<input type="text" value="A senha deve ter de 6 a 10 caracteres!" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
             }, 3000);
-            return;
-        }
-
-        if(SU_LOGINNAME == loginname) 
-            SU_LOGINNAME = null;
-
-        const req = await fetch(`${BASE_API}/user/edit`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Baerer ' + token
-            },
-            body: JSON.stringify({ SU_ID, SU_LOGINNAME, SU_NICKNAME, SU_PHONENUMBER, SU_PHOTO })
-        });
-        const json = await req.json();
-
-        if(json.success) {
-            window.location.replace('../home/index.html');
         } else {
-            const setMessage = document.getElementById('msg-profile-edit');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
-            setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
-            setTimeout(function() {
-                setMessage.style.display = 'none';
-            }, 3000);
+            const req = await fetch(`${BASE_API}/user/editPass`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Baerer ' + token
+                },
+                body: JSON.stringify({ SU_PASSWORD })
+            });
+            const json = await req.json();
+    
+            if(json.success) {
+                const setMessage = document.getElementById('msg-profile-pass');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                    closeModal();
+                }, 3000);
+            } else {
+                const setMessage = document.getElementById('msg-profile-pass');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
+            }
         }
-    } catch (err) {
-        const setMessage = document.getElementById('msg-profile-edit');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
+    } catch(err) {
+        const setMessage = document.getElementById('msg-profile-pass');
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -275,37 +347,104 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
     }
 }
 
-const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_TYPE) => {
-    const SU_PHOTO = setAvatar();
+const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
     try {
-        if(SU_NICKNAME != '' && SU_LOGINNAME != '' && SU_PASSWORD != '' && SU_PHONENUMBER != '' && SU_DATEBIRTHDAY != '') {
-            
-            const req = await fetch(`${BASE_API}/auth/register`, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO, SU_TYPE })
-            });
-            const json = await req.json();
+        const token = window.localStorage.getItem('token');
+        const SU_ID = window.localStorage.getItem('user');
 
-            if(json.success) {
-                window.location.replace('../home/index.html');
+        if(SU_NICKNAME == '' || SU_LOGINNAME == '' || SU_PHONENUMBER == '') {
+            const setMessage = document.getElementById('msg-profile-edit');
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="Realize alguma alteração" style="text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+            return;
+        }
+
+        const req = await fetch(`${BASE_API}/user/edit`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Baerer ' + token
+            },
+            body: JSON.stringify({ SU_ID, SU_LOGINNAME, SU_NICKNAME, SU_PHONENUMBER })
+        });
+        const json = await req.json();
+
+        if(json.success) {
+            const setMessage = document.getElementById('msg-profile-edit');
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+                redirectScreen('../subScreens/profile/index.html');
+            }, 3000);
+        } else {
+            const setMessage = document.getElementById('msg-profile-edit');
+            setMessage.style.display = 'flex';
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+            setTimeout(function() {
+                setMessage.style.display = 'none';
+            }, 3000);
+        }
+    } catch (err) {
+        const setMessage = document.getElementById('msg-profile-edit');
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+
+const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_DATEBIRTHDAY, SU_TYPE) => {
+    try {
+        const SU_PHOTO = setAvatar();
+
+        if(SU_NICKNAME != '' && SU_LOGINNAME != '' && SU_PASSWORD != '' && phonenumber != '' && SU_DATEBIRTHDAY != '') {
+            let result = validateFields(SU_LOGINNAME, SU_PASSWORD, SU_DATEBIRTHDAY, phonenumber);
+
+            let SU_PHONENUMBER = telValidate(phonenumber);
+
+            if(result.success) {
+                const req = await fetch(`${BASE_API}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, SU_PHONENUMBER, SU_DATEBIRTHDAY, SU_PHOTO, SU_TYPE })
+                });
+                const json = await req.json();
+    
+                if(json.success) {
+                    const setMessage = document.getElementById('msg-profile-add');
+                    setMessage.style.display = 'flex';
+                    setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+                    setTimeout(function() {
+                        setMessage.style.display = 'none';
+                        redirectScreen('../subScreens/profile/index.html');
+                    }, 3000);
+                } else {
+                    const setMessage = document.getElementById('msg-profile-add');
+                    setMessage.style.display = 'flex';
+                    setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                    setTimeout(function() {
+                        setMessage.style.display = 'none';
+                    }, 3000);
+                }
             } else {
                 const setMessage = document.getElementById('msg-profile-add');
-                setMessage.style.borderColor = '#E8273B'; 
-                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
-                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                setMessage.innerHTML = `<input type="text" value="${result.error}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
                     setMessage.style.display = 'none';
                 }, 3000);
             }
         } else {
             const setMessage = document.getElementById('msg-profile-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="Preencha os campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -340,8 +479,6 @@ const listMangaById = async (MG_ID) => {
             return json.data[0];
         else {
             const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -350,8 +487,6 @@ const listMangaById = async (MG_ID) => {
         }
     } catch(err) {
         const setMessage = document.getElementById('msg-add');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -374,8 +509,6 @@ const listMangas = async () => {
             return json;
         else {
             const setMessage = document.getElementById('msg-list');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -384,8 +517,6 @@ const listMangas = async () => {
         }
     } catch(err) {
         const setMessage = document.getElementById('msg-list');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -424,8 +555,6 @@ function definePages () {
                 }
             }).catch((err) => {
                 const setMessage = document.getElementById('msg-add');
-                setMessage.style.borderColor = '#E8273B'; 
-                setMessage.style.backgroundColor = '#ED5565';
                 setMessage.style.display = 'flex';
                 setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
                 setTimeout(function() {
@@ -464,17 +593,16 @@ function defineManga() {
                 <input type="file" name="pdf" id="pdf" accept="application/pdf" >
                 <div class="underline"></div>
             </div>
+            <div class="messages" id="msg-add" ></div> 
             <input type="button" id="register" value="Cadastrar" onclick="return registerChapters(${id}, chapter.value)" >
         `;
     }).catch((err) => {
         const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
-            setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
-            setTimeout(function() {
-                setMessage.style.display = 'none';
-            }, 3000);
+        setMessage.style.display = 'flex';
+        setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+        setTimeout(function() {
+            setMessage.style.display = 'none';
+        }, 3000);
     });
 }
 
@@ -508,17 +636,14 @@ const registerMangas = async () => {
 
         if(json.success) {
             const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #00FA9A; font-size: 14px; width: 100%;" disabled>`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
+                redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
             const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -527,8 +652,6 @@ const registerMangas = async () => {
         }
     } catch (err) {
         const setMessage = document.getElementById('msg-add');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -560,17 +683,14 @@ const registerChapters = async (MG_ID, SEQ) => {
 
         if(json.success) {
             const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #00FA9A; font-size: 14px; width: 100%;" disabled>`;
+            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
+                redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
             const setMessage = document.getElementById('msg-add');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -579,8 +699,6 @@ const registerChapters = async (MG_ID, SEQ) => {
         }
     } catch (err) {
         const setMessage = document.getElementById('msg-add');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
@@ -600,6 +718,7 @@ const searchManga = () => {
         setMessage.innerHTML = `<input type="text" value="Digite algum título antes de pesquisar" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
             setMessage.style.display = 'none';
+            redirectScreen('../subScreens/manga/index.html');
         }, 3000);
     } else {
         var data = listMangaByName(title);
@@ -620,6 +739,7 @@ const searchManga = () => {
                 list[0].forEach((item, k) => {
                     mangaList.innerHTML = 
                     `
+                        <div class="messages" id="msg-list" ></div> 
                         <div class="mangaItem" >
                             <img src="${item.MGP_PATH == '' ? 'https://www.ferramentastenace.com.br/wp-content/uploads/2017/11/sem-foto.jpg' : item.MGP_PATH}" >
                             <div class="mangaData" > 
@@ -632,8 +752,6 @@ const searchManga = () => {
             }
         }).catch((err) => {
             const setMessage = document.getElementById('msg-list');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -662,8 +780,6 @@ const listMangaByName = async (MG_TITLE) => {
             return json;
         else {
             const setMessage = document.getElementById('msg-list');
-            setMessage.style.borderColor = '#E8273B'; 
-            setMessage.style.backgroundColor = '#ED5565';
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
@@ -672,8 +788,6 @@ const listMangaByName = async (MG_TITLE) => {
         }
     } catch(err) {
         const setMessage = document.getElementById('msg-list');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {
