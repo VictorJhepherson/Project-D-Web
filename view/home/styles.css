@@ -452,3 +452,18 @@ form {
     flex-direction: column;
 }
 
+.c-loader {
+    animation: is-rotating 1s infinite;
+    border: 6px solid #e5e5e5;
+    border-radius: 50%;
+    border-top-color: #8e2de2;
+    height: 30px;
+    width: 30px;
+    display: none;
+}
+  
+@keyframes is-rotating {
+    to {
+        transform: rotate(1turn);
+    }
+}

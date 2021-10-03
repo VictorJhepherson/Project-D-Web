@@ -80,8 +80,8 @@ function redirectScreen (path) {
                             <input type="text" value="${response.SU_TYPE == 1 ? 'Adminstrador' : 'Comum'}" disabled>
                             <div class="underline"></div>
                         </div>
+                        <div class="c-loader" id="c-loader" ></div>
                         <div class="messages" id="msg-profile-edit" ></div> 
-                        
                         
                         <input type="button" id="update" value="Atualizar" style="display: none;" onclick="return UpdateUserInfo(edit_nickname.value, edit_email.value, edit_phone.value)">
                     `;
@@ -134,6 +134,18 @@ function redirectScreen (path) {
         }
     });
 }
+
+function onlynumber(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode( key );
+    //var regex = /^[0-9.,]+$/;
+    var regex = /^[0-9.]+$/;
+    if( !regex.test(key) ) {
+       theEvent.returnValue = false;
+       if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+ }
 
 function openModal () {
     const modal = document.getElementById('dv-modal');
@@ -356,6 +368,9 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
         const token = window.localStorage.getItem('token');
         const SU_ID = window.localStorage.getItem('user');
 
+        var loader = document.getElementById('c-loader');
+        loader.style.display = 'block';
+
         if(SU_NICKNAME == '' || SU_LOGINNAME == '' || SU_PHONENUMBER == '') {
             const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.display = 'flex';
@@ -378,6 +393,7 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
         const json = await req.json();
 
         if(json.success) {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
@@ -386,6 +402,7 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
                 redirectScreen('../subScreens/profile/index.html');
             }, 3000);
         } else {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-profile-edit');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -394,6 +411,7 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
             }, 3000);
         }
     } catch (err) {
+        loader.style.display = 'none';
         const setMessage = document.getElementById('msg-profile-edit');
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -405,6 +423,9 @@ const UpdateUserInfo = async (SU_NICKNAME, SU_LOGINNAME, SU_PHONENUMBER) => {
 
 const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_DATEBIRTHDAY, SU_TYPE) => {
     try {
+        var loader = document.getElementById('c-loader');
+        loader.style.display = 'block';
+
         const SU_PHOTO = setAvatar();
 
         if(SU_NICKNAME != '' && SU_LOGINNAME != '' && SU_PASSWORD != '' && phonenumber != '' && SU_DATEBIRTHDAY != '') {
@@ -424,6 +445,7 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_
                 const json = await req.json();
     
                 if(json.success) {
+                    loader.style.display = 'none';
                     const setMessage = document.getElementById('msg-profile-add');
                     setMessage.style.display = 'flex';
                     setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
@@ -432,6 +454,7 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_
                         redirectScreen('../subScreens/profile/index.html');
                     }, 3000);
                 } else {
+                    loader.style.display = 'none';
                     const setMessage = document.getElementById('msg-profile-add');
                     setMessage.style.display = 'flex';
                     setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -440,6 +463,7 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_
                     }, 3000);
                 }
             } else {
+                loader.style.display = 'none';
                 const setMessage = document.getElementById('msg-profile-add');
                 setMessage.style.display = 'flex';
                 setMessage.innerHTML = `<input type="text" value="${result.error}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -448,6 +472,7 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_
                 }, 3000);
             }
         } else {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-profile-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="Preencha os campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -456,6 +481,7 @@ const Register = async (SU_NICKNAME, SU_LOGINNAME, SU_PASSWORD, phonenumber, SU_
             }, 3000);
         }
     } catch (err) {
+        loader.style.display = 'none';
         const setMessage = document.getElementById('msg-profile-add');
         setMessage.style.borderColor = '#E8273B'; 
         setMessage.style.backgroundColor = '#ED5565';
@@ -539,9 +565,9 @@ function definePages () {
             var data = listMangas();
             data.then((response) => {
                 if(response.data.length <= 0) {
-                    var myForm = document.getElementById('mangaChapter');
+                    var mangaChapter = document.getElementById('mangaChapter');
 
-                    myForm.innerHTML += 
+                    mangaChapter.innerHTML += 
                     `
                         <div class="notFound">
                             <span class="material-icons" style="font-size: 30px; color: red;" >do_disturb</span>
@@ -624,6 +650,9 @@ const registerMangas = async () => {
         const MG_PHOTO = document.getElementById('photo').files[0];
         const MG_TITLE = document.getElementById('title').value;
 
+        var loader = document.getElementById('c-loader');
+        loader.style.display = 'block';
+
         var formData = new FormData();
         formData.append('MG_TITLE', MG_TITLE);
         formData.append('MG_PHOTO', MG_PHOTO);
@@ -639,6 +668,7 @@ const registerMangas = async () => {
         const json = await req.json();
 
         if(json.success) {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
@@ -647,6 +677,7 @@ const registerMangas = async () => {
                 redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -655,6 +686,7 @@ const registerMangas = async () => {
             }, 3000);
         }
     } catch (err) {
+        loader.style.display = 'none';
         const setMessage = document.getElementById('msg-add');
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -670,10 +702,13 @@ const registerChapters = async (MG_ID, SEQ) => {
         const MGC_ARCHIVE = document.getElementById('pdf').files[0];
         const MGC_SEQCHAPTER = parseInt(SEQ, 10) + 1;
 
+        var loader = document.getElementById('c-loader');
+        loader.style.display = 'block';
+
         var formData = new FormData();
         formData.append('MG_ID', MG_ID);
         formData.append('MGC_ARCHIVE', MGC_ARCHIVE);
-        formData.append('MGC_SEQCHAPTER', MGC_SEQCHAPTER)
+        formData.append('MGC_SEQCHAPTER', MGC_SEQCHAPTER);
 
         const req = await fetch(`${BASE_API}/manga/chapters`, {
             method: 'POST',
@@ -686,6 +721,7 @@ const registerChapters = async (MG_ID, SEQ) => {
         const json = await req.json();
 
         if(json.success) {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
@@ -694,6 +730,7 @@ const registerChapters = async (MG_ID, SEQ) => {
                 redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -702,6 +739,7 @@ const registerChapters = async (MG_ID, SEQ) => {
             }, 3000);
         }
     } catch (err) {
+        loader.style.display = 'none';
         const setMessage = document.getElementById('msg-add');
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="${err}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;

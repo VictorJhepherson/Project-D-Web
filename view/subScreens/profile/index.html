@@ -47,13 +47,14 @@
                     <div class="underline"></div>
                 </div>
                 <div class="input-field" style="width: 100%">
-                    <input type="text" maxlength="11" name="phone" id="phone" placeholder="xxxxxxxxxxx" >
+                    <input type="text" maxlength="11" name="phone" id="phone" placeholder="Telefone" onkeypress="return onlynumber();" >
                     <div class="underline"></div>
                 </div>
                 <div class="input-field" style="width: 100%">
                     <input type="date" name="bday" id="bday" placeholder="Aniversário" >
                     <div class="underline"></div>
                 </div>
+                <div class="c-loader" id="c-loader" ></div>
                 <div class="messages" id="msg-profile-add" ></div> 
                 
                 <input type="button" value="Cadastrar" onclick="return Register(nickname.value, email.value, password.value, phone.value, bday.value, 1)">
