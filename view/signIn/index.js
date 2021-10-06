@@ -14,11 +14,22 @@ const SignIn = async (SU_NICKNAME, SU_PASSWORD) => {
             const json = await req.json();
 
             if(json.success) {
-                console.log(json.data.SU_ID);
-                window.localStorage.setItem('user', json.data.SU_ID.toString());
-                window.localStorage.setItem('token', json.token);
-                window.localStorage.setItem('nickname', json.data.SU_NICKNAME.toString());
-                window.location.replace('../home/index.html', { json });
+                if(json.data.SU_TYPE != 1) {
+                    const setMessage = document.getElementById('alerta');
+                    setMessage.style.borderColor = '#E8273B';
+                    setMessage.style.backgroundColor = '#ED5565';
+                    setMessage.style.display = 'flex';
+                    setMessage.innerHTML = `<input type="text" value="Usuário não tem permissão para acessar esse Portal!" style="background: #ED5565; color: white; font-size: 1rem;" >`;
+                    setTimeout(function() {
+                        setMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    console.log(json.data.SU_ID);
+                    window.localStorage.setItem('user', json.data.SU_ID.toString());
+                    window.localStorage.setItem('token', json.token);
+                    window.localStorage.setItem('nickname', json.data.SU_NICKNAME.toString());
+                    window.location.replace('../home/index.html', { json });
+                }
             } else {
                 const setMessage = document.getElementById('alerta');
                 setMessage.style.borderColor = '#E8273B';
