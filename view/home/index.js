@@ -145,7 +145,7 @@ function onlynumber(evt) {
        theEvent.returnValue = false;
        if(theEvent.preventDefault) theEvent.preventDefault();
     }
- }
+}
 
 function openModal () {
     const modal = document.getElementById('dv-modal');
@@ -208,7 +208,6 @@ const telValidate = (phonenumber) => {
 }
 
 const validateFields = (loginname, password, datebirthday, phonenumber) => {
-    console.log(datebirthday);
     clearResult();
     if(!emailValidate(loginname)) {
         validateResult.error = 'O EMAIL é inválido!',
@@ -218,7 +217,7 @@ const validateFields = (loginname, password, datebirthday, phonenumber) => {
         validateResult.error = 'A SENHA deve ter de 6 a 10 caracteres!',
         validateResult.success = false;
         return validateResult;
-    } else if(datebirthday.length < 10) {
+    } else if(datebirthday.length < 10 || datebirthday.length > 10) {
         validateResult.error = 'A DATA foi preenchida incorretamente!',
         validateResult.success = false;
         return validateResult;
@@ -226,7 +225,7 @@ const validateFields = (loginname, password, datebirthday, phonenumber) => {
         validateResult.error = 'A DATA não é válida!',
         validateResult.success = false;
         return validateResult;
-    } else if(phonenumber.length < 11) {
+    } else if(phonenumber.length < 11 || phonenumber.length > 11) {
         validateResult.error = 'O TELEFONE foi preenchido incorretamente!',
         validateResult.success = false;
         return validateResult;
@@ -653,37 +652,46 @@ const registerMangas = async () => {
         var loader = document.getElementById('c-loader');
         loader.style.display = 'block';
 
-        var formData = new FormData();
-        formData.append('MG_TITLE', MG_TITLE);
-        formData.append('MG_PHOTO', MG_PHOTO);
-
-        const req = await fetch(`${BASE_API}/manga/title`, {
-            method: 'POST',
-            headers: {
-                Accept: '*/*',
-                "Authorization": 'Baerer ' + token
-            },
-            body: formData
-        });
-        const json = await req.json();
-
-        if(json.success) {
-            loader.style.display = 'none';
+        if(MG_PHOTO == '' || MG_TITLE == '') {
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+            setMessage.innerHTML = `<input type="text" value="Preencha todos os campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
-                redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
-            loader.style.display = 'none';
-            const setMessage = document.getElementById('msg-add');
-            setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
-            setTimeout(function() {
-                setMessage.style.display = 'none';
-            }, 3000);
+            var formData = new FormData();
+            formData.append('MG_TITLE', MG_TITLE);
+            formData.append('MG_PHOTO', MG_PHOTO);
+    
+            const req = await fetch(`${BASE_API}/manga/title`, {
+                method: 'POST',
+                headers: {
+                    Accept: '*/*',
+                    "Authorization": 'Baerer ' + token
+                },
+                body: formData
+            });
+            const json = await req.json();
+    
+            if(json.success) {
+                loader.style.display = 'none';
+                const setMessage = document.getElementById('msg-add');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                    redirectScreen('../subScreens/manga/index.html');
+                }, 3000);
+            } else {
+                loader.style.display = 'none';
+                const setMessage = document.getElementById('msg-add');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
+            }
         }
     } catch (err) {
         loader.style.display = 'none';
@@ -705,38 +713,47 @@ const registerChapters = async (MG_ID, SEQ) => {
         var loader = document.getElementById('c-loader');
         loader.style.display = 'block';
 
-        var formData = new FormData();
-        formData.append('MG_ID', MG_ID);
-        formData.append('MGC_ARCHIVE', MGC_ARCHIVE);
-        formData.append('MGC_SEQCHAPTER', MGC_SEQCHAPTER);
-
-        const req = await fetch(`${BASE_API}/manga/chapters`, {
-            method: 'POST',
-            headers: {
-                Accept: '*/*',
-                "Authorization": 'Baerer ' + token
-            },
-            body: formData
-        });
-        const json = await req.json();
-
-        if(json.success) {
-            loader.style.display = 'none';
+        if(MG_ID == '' || MGC_ARCHIVE == '') {
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+            setMessage.innerHTML = `<input type="text" value="Preencha todos campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
             setTimeout(function() {
                 setMessage.style.display = 'none';
-                redirectScreen('../subScreens/manga/index.html');
             }, 3000);
         } else {
-            loader.style.display = 'none';
-            const setMessage = document.getElementById('msg-add');
-            setMessage.style.display = 'flex';
-            setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
-            setTimeout(function() {
-                setMessage.style.display = 'none';
-            }, 3000);
+            var formData = new FormData();
+            formData.append('MG_ID', MG_ID);
+            formData.append('MGC_ARCHIVE', MGC_ARCHIVE);
+            formData.append('MGC_SEQCHAPTER', MGC_SEQCHAPTER);
+
+            const req = await fetch(`${BASE_API}/manga/chapters`, {
+                method: 'POST',
+                headers: {
+                    Accept: '*/*',
+                    "Authorization": 'Baerer ' + token
+                },
+                body: formData
+            });
+            const json = await req.json();
+
+            if(json.success) {
+                loader.style.display = 'none';
+                const setMessage = document.getElementById('msg-add');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #008000; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                    redirectScreen('../subScreens/manga/index.html');
+                }, 3000);
+            } else {
+                loader.style.display = 'none';
+                const setMessage = document.getElementById('msg-add');
+                setMessage.style.display = 'flex';
+                setMessage.innerHTML = `<input type="text" value="${json.mensagem}" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
+                setTimeout(function() {
+                    setMessage.style.display = 'none';
+                }, 3000);
+            }
         }
     } catch (err) {
         loader.style.display = 'none';
@@ -754,8 +771,6 @@ const searchManga = () => {
     var mangaList = document.getElementById('mangaList');
     if(title == '' || title == null) {
         const setMessage = document.getElementById('msg-list');
-        setMessage.style.borderColor = '#E8273B'; 
-        setMessage.style.backgroundColor = '#ED5565';
         setMessage.style.display = 'flex';
         setMessage.innerHTML = `<input type="text" value="Digite algum título antes de pesquisar" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
         setTimeout(function() {

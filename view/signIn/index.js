@@ -24,11 +24,10 @@ const SignIn = async (SU_NICKNAME, SU_PASSWORD) => {
                         setMessage.style.display = 'none';
                     }, 3000);
                 } else {
-                    console.log(json.data.SU_ID);
                     window.localStorage.setItem('user', json.data.SU_ID.toString());
                     window.localStorage.setItem('token', json.token);
                     window.localStorage.setItem('nickname', json.data.SU_NICKNAME.toString());
-                    window.location.replace('../home/index.html', { json });
+                    window.location.replace('../home/index.html');
                 }
             } else {
                 const setMessage = document.getElementById('alerta');

@@ -21,7 +21,7 @@ const refreshToken = async () => {
                 window.localStorage.setItem('user', json.data.SU_ID.toString());
                 window.localStorage.setItem('token', json.token);
                 setTimeout(function() {
-                    window.location.replace('../home/index.html', { json });
+                    window.location.replace('../home/index.html');
                 }, 2000);
             } else {
                 setTimeout(function() {
