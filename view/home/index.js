@@ -622,6 +622,7 @@ function defineManga() {
                 <input type="file" name="pdf" id="pdf" accept="application/pdf" >
                 <div class="underline"></div>
             </div>
+            <div class="c-loader" id="c-loader" ></div>
             <div class="messages" id="msg-add" ></div> 
             <input type="button" id="register" value="Cadastrar" onclick="return registerChapters(${id}, chapter.value)" >
         `;
@@ -647,12 +648,13 @@ const registerMangas = async () => {
     try {
         const token = window.localStorage.getItem('token');
         const MG_PHOTO = document.getElementById('photo').files[0];
-        const MG_TITLE = document.getElementById('title').value;
+        const MG_TITLE = document.getElementById('title-manga').value;
 
         var loader = document.getElementById('c-loader');
         loader.style.display = 'block';
 
         if(MG_PHOTO == '' || MG_TITLE == '') {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="Preencha todos os campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
@@ -713,7 +715,8 @@ const registerChapters = async (MG_ID, SEQ) => {
         var loader = document.getElementById('c-loader');
         loader.style.display = 'block';
 
-        if(MG_ID == '' || MGC_ARCHIVE == '') {
+        if(MG_ID == '' || MGC_ARCHIVE == '' || MGC_ARCHIVE == undefined) {
+            loader.style.display = 'none';
             const setMessage = document.getElementById('msg-add');
             setMessage.style.display = 'flex';
             setMessage.innerHTML = `<input type="text" value="Preencha todos campos" style="background-color: white; text-align: center; color: #ED5565; font-size: 14px; width: 100%;" disabled>`;
